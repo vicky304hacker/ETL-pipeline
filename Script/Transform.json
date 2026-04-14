@@ -1,0 +1,44 @@
+{
+  "name" : "Transform",
+  "jobMode" : "SCRIPT",
+  "description" : "",
+  "role" : "arn:aws:iam::524715311063:role/Glue-Lakeshouse-Execution-Role",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://vky-lh26/scripts/Transform.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-glue-datacatalog" : "true",
+    "--input_path" : "s3://vky-lh26/raw/sales.csv",
+    "--job-bookmark-option" : "job-bookmark-disable",
+    "--datalake-formats" : "delta",
+    "--TempDir" : "s3://vky-lh26/temp/",
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://vky-lh26/Log/",
+    "--enable-job-insights" : "true",
+    "--enable-observability-metrics" : "true",
+    "--conf" : "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog --conf spark.eventLog.rolling.enabled=true",
+    "--job-language" : "python",
+    "--enable-auto-scaling" : "true",
+    "--output_path" : "s3://vky-lh26/silver/sales_delta/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 5,
+  "maxCapacity" : 2.0,
+  "glueVersion" : "5.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "FLEX",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "ETL-pipeline",
+    "branch" : "main",
+    "folder" : "Script"
+  }
+}
